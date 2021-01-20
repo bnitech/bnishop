@@ -1,30 +1,30 @@
 package bnilive.bnishop.repository;
 
 import bnilive.bnishop.domain.item.Item;
+import java.util.List;
+import javax.persistence.EntityManager;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
-
-import javax.persistence.EntityManager;
-import java.util.List;
 
 @Repository
 @RequiredArgsConstructor
 public class ItemRepository {
-    private final EntityManager em;
 
-    public void save(Item item) {
-        if (item.getId() == null) {
-            em.persist(item);
-        } else {
-            em.merge(item);
-        }
-    }
+  private final EntityManager em;
 
-    public Item findOne(Long id) {
-        return em.find(Item.class, id);
+  public void save(Item item) {
+    if (item.getId() == null) {
+      em.persist(item);
+    } else {
+      em.merge(item);
     }
+  }
 
-    public List<Item> findAll() {
-        return em.createQuery("select i from Item i", Item.class).getResultList();
-    }
+  public Item findOne(Long id) {
+    return em.find(Item.class, id);
+  }
+
+  public List<Item> findAll() {
+    return em.createQuery("select i from Item i", Item.class).getResultList();
+  }
 }
