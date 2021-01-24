@@ -5,10 +5,12 @@ import bnilive.bnishop.domain.DeliveryStatus;
 import bnilive.bnishop.domain.Member;
 import bnilive.bnishop.domain.Order;
 import bnilive.bnishop.domain.OrderItem;
+import bnilive.bnishop.domain.OrderSearch;
 import bnilive.bnishop.domain.item.Item;
 import bnilive.bnishop.repository.ItemRepository;
 import bnilive.bnishop.repository.MemberRepository;
 import bnilive.bnishop.repository.OrderRepository;
+import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,9 +24,6 @@ public class OrderService {
   private final OrderRepository orderRepository;
   private final ItemRepository itemRepository;
 
-  /**
-   * 주문
-   */
   @Transactional
   public Long order(Long memberId, Long itemId, int count) {
 
@@ -48,14 +47,17 @@ public class OrderService {
     return order.getId();
   }
 
-  /**
-   * 주문 취소
-   */
   @Transactional
   public void cancelOrder(Long orderId) {
+
     //주문 엔티티 조회
     Order order = orderRepository.findOne(orderId);
+
     //주문 취소
     order.cancel();
+  }
+
+  public List<Order> findOrders(OrderSearch orderSearch) {
+    return orderRepository.findAllByString(orderSearch);
   }
 }
