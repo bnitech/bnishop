@@ -8,6 +8,8 @@ import bnilive.bnishop.domain.OrderItem;
 import bnilive.bnishop.domain.OrderSearch;
 import bnilive.bnishop.domain.OrderStatus;
 import bnilive.bnishop.repository.OrderRepository;
+import bnilive.bnishop.repository.order.query.OrderQueryDto;
+import bnilive.bnishop.repository.order.query.OrderQueryRepository;
 import java.time.LocalDateTime;
 import java.util.List;
 import lombok.Data;
@@ -21,6 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class OderApiController {
 
   private final OrderRepository orderRepository;
+  private final OrderQueryRepository orderQueryRepository;
 
   @GetMapping("/api/v1/orders")
   public List<Order> ordersV1() {
@@ -60,6 +63,11 @@ public class OderApiController {
     List<Order> orders = orderRepository.findAllWithMemberDelivery(offset, limit);
 
     return orders.stream().map(OrderDto::new).collect(toList());
+  }
+
+  @GetMapping("/api/v4/orders")
+  public List<OrderQueryDto> ordersV4() {
+    return orderQueryRepository.findOrderQueryDtos();
   }
 
   @Data
